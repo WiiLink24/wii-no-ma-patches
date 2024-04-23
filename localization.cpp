@@ -98,7 +98,66 @@ void PatchUserAgent(UACtx* ctx)
     UnlockMutex(lock, 0xffffffff);
 }
 
+u32 IsInternetChannelInstalled(char* param_1, void* param_2)
+{
+    LONGCALL u32 ESHasTitle(char*, void*, u32, u32) AT(0x802aedb8);
+
+    u32 code = sc::GetAreaCode();
+    switch (code) {
+    case 0:
+        return ESHasTitle(param_1, param_2, 0x10001, 0x4841444a);
+    case 1:
+        return ESHasTitle(param_1, param_2, 0x10001, 0x48414445);
+    case 2:
+        return ESHasTitle(param_1, param_2, 0x10001, 0x48414450);
+    default:
+        // Return value for not installed
+        return 0;
+    }
+}
+
+u32 InternetChannelTMDView(u16* param_1, void* param_2)
+{
+    LONGCALL u32 ESGetTMDView(u16*, void*, u32, u32) AT(0x802aeef4);
+
+    u32 code = sc::GetAreaCode();
+    switch (code) {
+    case 0:
+        return ESGetTMDView(param_1, param_2, 0x10001, 0x4841444a);
+    case 1:
+        return ESGetTMDView(param_1, param_2, 0x10001, 0x48414445);
+    case 2:
+        return ESGetTMDView(param_1, param_2, 0x10001, 0x48414450);
+    default:
+        // Return value for no view
+        return 0;
+    }
+}
+
+void LaunchInternetChannel(char* url)
+{
+    LONGCALL void OSLaunchTitleWithArguments(u32, u32, u32, char*, u32)
+        AT(0x802de780);
+
+    u32 code = sc::GetAreaCode();
+    switch (code) {
+    case 0:
+        OSLaunchTitleWithArguments(0x10001, 0x4841444a, 0, url, 0);
+    case 1:
+        OSLaunchTitleWithArguments(0x10001, 0x48414445, 0, url, 0);
+    default:
+        // Even if this isn't PAL, this will just throw to the Wii Menu.
+        // If it isn't PAL it wouldn't even reach here to begin with.
+        OSLaunchTitleWithArguments(0x10001, 0x48414450, 0, url, 0);
+    }
+
+    __builtin_unreachable();
+}
+
 ROOM_DEFINE_PATCH = {
     Patch::WriteFunctionCall(0x802af478, ReadStrapImage),
-    Patch::WriteFunctionCall(0x8001d938, PatchUserAgent)};
+    Patch::WriteFunctionCall(0x8001d938, PatchUserAgent),
+    Patch::WriteFunctionCall(0x802af018, IsInternetChannelInstalled),
+    Patch::WriteFunctionCall(0x802af04c, InternetChannelTMDView),
+    Patch::WriteFunctionCall(0x801c0d38, LaunchInternetChannel)};
 } // namespace room::Localization
