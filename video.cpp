@@ -9,7 +9,8 @@ namespace room::Video {
 
         // We can fix the pink bar by forcing the 480i video mode.
         // This changes the setting for the whole system which may or may not be favourable, but it works.
-        *reinterpret_cast<u8*>(0x808ad361) = 1;
+        if (*reinterpret_cast<u8*>(0x808ad361) == 5)
+            *reinterpret_cast<u8*>(0x808ad361) = 1;
     }
 
     ROOM_DEFINE_PATCH = {
