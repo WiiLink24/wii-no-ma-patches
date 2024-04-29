@@ -1,6 +1,5 @@
 #include <cnt.h>
 #include <cstdlib.h>
-#include <patch.h>
 #include <setting.h>
 
 namespace room::Localization
