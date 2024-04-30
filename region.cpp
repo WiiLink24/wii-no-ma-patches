@@ -33,5 +33,15 @@ ROOM_DEFINE_PATCH = {
     ),
 
     // Removes the Wii Number region validator.
-    Patch::WriteASM(0x803b4f24, 1, ASM_LAMBDA(li r3, 0x0;))};
+    Patch::WriteASM(0x803b4f24, 1, ASM_LAMBDA(li r3, 0x0;)),
+
+    // Change NTSC-U PD to JPN
+    Patch::WriteASM(0x8038a4f8, 1, ASM_LAMBDA(addi r30, r4, 0x434a)),
+    Patch::WriteASM(0x8038a788, 1, ASM_LAMBDA(addi r3, r31, 0x84)),
+    Patch::WriteASM(0x8038a74c, 1, ASM_LAMBDA(addi r3, r31, 0)),
+
+    // Change PAL PD to JPN
+    Patch::WriteASM(0x8038a50c, 1, ASM_LAMBDA(addi r30, r4, 0x434a)),
+    Patch::WriteASM(0x8038a790, 1, ASM_LAMBDA(addi r3, r31, 0x84)),
+    Patch::WriteASM(0x8038a754, 1, ASM_LAMBDA(addi r3, r31, 0))};
 }
