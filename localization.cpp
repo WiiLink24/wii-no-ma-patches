@@ -82,15 +82,16 @@ void PatchUserAgent(UACtx* ctx)
     Mutex* lock[2];
     LockMutex(lock, ctx->mutex);
     if (!ctx->is_created) {
-        LONGCALL u64 GetWiiNumber(void* ptr) AT(0x80038a74);
+        LONGCALL int NWC24GetMyUserId(u64* ptr) AT(0x803aba80);
         LONGCALL char* GetVersion() AT(0x8000dea8);
         LONGCALL char* GetRevision() AT(0x8000dea0);
 
+        u64 wii_no{};
+        NWC24GetMyUserId(&wii_no);
+
         cstdlib::snprintf(
             &ctx->user_agent, 100, "WM/%s/%s/%s/%016llu", GetRevision(),
-            GetVersion(), GetLanguageCode(),
-            GetWiiNumber(reinterpret_cast<void*>(0x808829b8))
-        );
+            GetVersion(), GetLanguageCode(), wii_no);
         ctx->is_created = true;
     }
 
