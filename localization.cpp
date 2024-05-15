@@ -4,8 +4,21 @@
 
 namespace room::Localization
 {
+enum Language
+{
+    // Languages officially supported by Nintendo
+    ALL,
+    PTBR,
+    RU,
+};
+
 const char* GetLanguageCode()
 {
+    if (LANGUAGE == PTBR)
+        return "ptbr";
+    else if (LANGUAGE == RU)
+        return "ru";
+
     u8 code = sc::GetLanguage();
     switch (code) {
     case 0:
