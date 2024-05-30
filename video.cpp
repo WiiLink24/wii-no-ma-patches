@@ -1,5 +1,6 @@
 #include <util.h>
 #include <patch.h>
+#include <rvl.h>
 
 namespace room::Video {
     void FixPinkBar() {
@@ -10,7 +11,11 @@ namespace room::Video {
         // We can fix the pink bar by forcing the 480i video mode.
         // This changes the setting for the whole system which may or may not be favourable, but it works.
         if (*reinterpret_cast<u8*>(0x808ad361) == 5)
+        {
             *reinterpret_cast<u8*>(0x808ad361) = 1;
+            RVL::DCFlushRange(reinterpret_cast<u32*>(0x808ad361), 1);
+            RVL::ICInvalidateRange(reinterpret_cast<u32*>(0x808ad361), 1);
+        }
     }
 
     ROOM_DEFINE_PATCH = {
