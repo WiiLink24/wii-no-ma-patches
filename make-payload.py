@@ -21,6 +21,13 @@ def build(_language):
                     "-I.", "-Wl,--defsym=ORIGIN_ADDRESS=0x80001800"] + flags).check_returncode()
     subprocess.run([path_objcopy, out_path + ".elf", binary_path, "-O", "binary"]).check_returncode()
 
+    with open("binary/00000025.app", "rb") as original:
+        data = original.read()
+        with open(f"binary/00000025_{_language}.app", "wb") as new:
+            with open(binary_path, "rb") as patch:
+                new.write(data)
+                new.write(patch.read())
+
 
 if __name__ == "__main__":
     try:
