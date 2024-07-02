@@ -14,8 +14,8 @@ using func = void (*)();
 
     struct Request {
         u8 _[40];
-        char* hostname[100];
-        u8 _1[32];
+        char* hostname;
+        u8 _1[128];
         ssl_ctx_t ssl_ctx;
         void* buffer1;
         u32 buffer1_len;
