@@ -1,4 +1,5 @@
 #include <beacon.cpp>
+#include <encryption.cpp>
 #include <forecast.cpp>
 #include <localization.cpp>
 #include <mem.cpp>
