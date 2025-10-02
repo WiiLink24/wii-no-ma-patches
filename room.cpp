@@ -1,9 +1,10 @@
 #include <beacon.cpp>
+#include <dsi.cpp>
 #include <encryption.cpp>
 #include <forecast.cpp>
 #include <localization.cpp>
 #include <mem.cpp>
 #include <patch.cpp>
 #include <region.cpp>
-#include <video.cpp>
 #include <ssl.cpp>
+#include <video.cpp>
