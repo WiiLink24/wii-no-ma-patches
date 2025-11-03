@@ -3,6 +3,7 @@
 #include <patch.h>
 #include <rvl.h>
 #include <util.h>
+#include "video.h"
 
 namespace room::Patch
 {
@@ -15,6 +16,9 @@ SECTION(".apply_patches") void ApplyPatches()
     for (u32 i = 0; i < patch_count; i++) {
         ApplyPatch((&PatchStart)[i]);
     }
+
+    // Patch PAL video mode.
+    Video::PatchVideoMode();
 
     // Call the replaced function. I am not 100% sure what this does but if this
     // isn't called the channel freezes after the news.
