@@ -73,8 +73,7 @@ char* EncryptAndCopyStringToBuffer(StringBuffer* buffer, char* string)
     // and copy a string that is larger than available memory and crash
     // everything. Unfortunately I cannot change this as this logic persists
     // throughout everything this string buffer is used in.
-    buffer->string =
-        reinterpret_cast<char*>(buffer->string + (padded_len * 2) + 1);
+    buffer->string = buffer->string + padded_len * 2 + 1;
 
     // Fix the function
     *reinterpret_cast<u32*>(0x803b7f38) = 0x803b7e9c;
